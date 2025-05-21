@@ -1,6 +1,6 @@
-__author__ = 'Willian Antonio'
+__author__ = "Willian Antonio"
 
-from simple_dependency_injector.core.container_config import ContainerConfig
+from simple_dependency_injector.core.component import ContainerConfig
 
 
 def singleton(is_lazy: bool = False):
@@ -8,8 +8,8 @@ def singleton(is_lazy: bool = False):
         @classmethod
         def container_config(cls) -> ContainerConfig:
             return {
-                'injected_type': 'singleton',
-                'is_lazy': is_lazy,
+                "injected_type": "singleton",
+                "is_lazy": is_lazy,
             }
 
         cls.container_config = container_config
@@ -23,8 +23,8 @@ def factory():
         @classmethod
         def container_config(cls) -> ContainerConfig:
             return {
-                'injected_type': 'factory',
-                'is_lazy': False,
+                "injected_type": "factory",
+                "is_lazy": False,
             }
 
         cls.container_config = container_config

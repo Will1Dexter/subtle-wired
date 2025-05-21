@@ -1,18 +1,18 @@
-__version__ = '1.0.0'
-__author__ = 'Willian Antonio'
+__version__ = "1.0.0"
+__author__ = "Willian Antonio"
 
 from .container import Container
-from .container_config import (
+from .component import (
     ContainerConfig,
-    ContainerConfigurable,
+    ContainerComponent,
     InjectedType,
 )
 from .injector import Injector
 
 __all__ = [
-    'Injector',
-    'Container',
-    'ContainerConfig',
-    'ContainerConfigurable',
-    'InjectedType',
+    "Injector",
+    "Container",
+    "ContainerConfig",
+    "ContainerComponent",
+    "InjectedType",
 ]

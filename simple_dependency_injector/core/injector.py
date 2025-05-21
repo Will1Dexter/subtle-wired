@@ -1,4 +1,4 @@
-__author__ = 'Willian Antônio'
+__author__ = "Willian Antônio"
 
 from abc import ABC
 from inspect import Signature, _empty, getmro, signature
@@ -6,7 +6,7 @@ from threading import Lock
 from typing import Any, Callable, Optional, Type
 
 from simple_dependency_injector.core.base import Singleton
-from simple_dependency_injector.core.container_config import InjectedType
+from simple_dependency_injector.core.component import InjectedType
 
 
 class InjectedItem(object):
@@ -14,7 +14,7 @@ class InjectedItem(object):
         self,
         interface: type,
         implementation: Type,
-        injected_type: InjectedType = 'singleton',
+        injected_type: InjectedType = "singleton",
         is_lazy: bool = False,
     ):
         InjectedItem.validate_interface(interface)
@@ -28,7 +28,7 @@ class InjectedItem(object):
 
     @staticmethod
     def get_interface_name(interface: Type) -> Optional[str]:
-        return getattr(interface, '__name__', None)
+        return getattr(interface, "__name__", None)
 
     @staticmethod
     def get_implementation_interface(
@@ -37,9 +37,7 @@ class InjectedItem(object):
         interfaces = [
             base
             for base in getmro(implementation)
-            if issubclass(base, ABC)
-            and base is not ABC
-            and base is not implementation
+            if issubclass(base, ABC) and base is not ABC and base is not implementation
         ]
 
         return interfaces[0] if len(interfaces) > 0 else None
@@ -58,7 +56,7 @@ class InjectedItem(object):
     def validate_interface(interface: Type):
         name = InjectedItem.get_interface_name(interface)
         if name is None:
-            raise AttributeError('interface has no name!')
+            raise AttributeError("interface has no name!")
 
     @property
     def name(self) -> str:
@@ -79,7 +77,7 @@ class InjectedItem(object):
     def update_implementation(
         self,
         implementation: Type,
-        injected_type: InjectedType = 'singleton',
+        injected_type: InjectedType = "singleton",
         is_lazy: bool = False,
     ):
         with self.__item_lock:
@@ -90,16 +88,16 @@ class InjectedItem(object):
 
     def create_instance(
         self,
-        injector: 'Injector',
+        injector: "Injector",
         interface_consulted: dict[str, bool],
     ) -> Any:
         interface_consulted[self.name] = True
         with self.__item_lock:
-            if self.__instance is None or self.__injected_type == 'factory':
+            if self.__instance is None or self.__injected_type == "factory":
                 dependencies: list[Any] = []
                 sig: Signature = signature(self.__implementation.__init__)
                 for param in sig.parameters:
-                    if param == 'self':
+                    if param == "self":
                         continue
 
                     dep_type = sig.parameters[param].annotation
@@ -125,13 +123,11 @@ class InjectedItem(object):
     @staticmethod
     def get_init_wrapper(
         init_function: Callable,
-        injector: 'Injector',
+        injector: "Injector",
     ) -> Callable:
         def init_wrapper(self):
             interface_consulted: dict[str, bool] = {}
-            interface = InjectedItem.get_implementation_interface(
-                self.__class__
-            )
+            interface = InjectedItem.get_implementation_interface(self.__class__)
             if interface is not None:
                 name = InjectedItem.get_interface_name(interface)
                 interface_consulted[name] = True
@@ -139,7 +135,7 @@ class InjectedItem(object):
             sig: Signature = signature(init_function)
             dependencies: list[Any] = []
             for param in sig.parameters:
-                if param == 'self':
+                if param == "self":
                     continue
 
                 dep_type = sig.parameters[param].annotation
@@ -164,13 +160,11 @@ class InjectedItem(object):
     @staticmethod
     def get_method_wrapper(
         method_function: Callable,
-        injector: 'Injector',
+        injector: "Injector",
     ) -> Any:
         def get_wrapper(self):
             interface_consulted: dict[str, bool] = {}
-            interface = InjectedItem.get_implementation_interface(
-                self.__class__
-            )
+            interface = InjectedItem.get_implementation_interface(self.__class__)
             if interface is not None:
                 name = InjectedItem.get_interface_name(interface)
                 interface_consulted[name] = True
@@ -201,24 +195,22 @@ class Injector(Singleton):
         self,
         interface: Type,
         implementation: Type,
-        injected_type: InjectedType = 'singleton',
+        injected_type: InjectedType = "singleton",
         is_lazy: bool = False,
     ):
         with self.global_lock:
-            item = InjectedItem(
-                interface, implementation, injected_type, is_lazy
-            )
+            item = InjectedItem(interface, implementation, injected_type, is_lazy)
             self.interfaces[item.name] = item
 
     def upsert_implementation(
         self,
         implementation: Type,
-        injected_type: InjectedType = 'singleton',
+        injected_type: InjectedType = "singleton",
         is_lazy: bool = False,
     ):
         InjectedItem.validate_implementation(implementation)
         interface = InjectedItem.get_implementation_interface(implementation)
-        assert hasattr(interface, '__init__')
+        assert hasattr(interface, "__init__")
         item = self.__get_injected_item(interface)
         if item is not None:
             raise AttributeError(
@@ -231,9 +223,7 @@ class Injector(Singleton):
                 + "' implementation!"
             )
         else:
-            self.__set_injected_item(
-                interface, implementation, injected_type, is_lazy
-            )
+            self.__set_injected_item(interface, implementation, injected_type, is_lazy)
 
     def get_implementation(self, interface: Type) -> Type:
         item = self.__get_injected_item(interface)
@@ -266,9 +256,7 @@ class Injector(Singleton):
 
     def get_instance(self, interface: Type) -> Any:
         interface_consulted: dict[str, bool] = {}
-        return self.get_instance_recursive(
-            interface, _empty, interface_consulted
-        )
+        return self.get_instance_recursive(interface, _empty, interface_consulted)
 
     def make_all_instances(self):
         for name in self.interfaces:
@@ -277,6 +265,4 @@ class Injector(Singleton):
                 continue
 
             interface_consulted: dict[str, bool] = {}
-            self.get_instance_recursive(
-                item.interface, _empty, interface_consulted
-            )
+            self.get_instance_recursive(item.interface, _empty, interface_consulted)

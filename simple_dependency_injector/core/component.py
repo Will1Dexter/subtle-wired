@@ -1,8 +1,8 @@
-__author__ = 'Willian Antônio'
+__author__ = "Willian Antônio"
 
 from typing import Literal, Protocol, TypedDict
 
-InjectedType = Literal['singleton', 'factory']
+InjectedType = Literal["singleton", "factory"]
 
 
 class ContainerConfig(TypedDict):
@@ -10,7 +10,7 @@ class ContainerConfig(TypedDict):
     is_lazy: bool
 
 
-class ContainerConfigurable(Protocol):
+class ContainerComponent(Protocol):
     @classmethod
     def container_config(cls) -> ContainerConfig:
         pass
