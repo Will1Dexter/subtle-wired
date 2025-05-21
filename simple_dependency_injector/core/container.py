@@ -1,20 +1,11 @@
 __author__ = 'Willian Antônio'
 
 from abc import ABC
-from typing import Protocol, TypedDict
 
-from simple_dependency_injector.core.injector import InjectedType, Injector
-
-
-class ContainerConfig(TypedDict):
-    injected_type: InjectedType
-    is_lazy: bool
-
-
-class ContainerConfigurable(Protocol):
-    @classmethod
-    def container_config(cls) -> ContainerConfig:
-        pass
+from simple_dependency_injector.core.container_config import (
+    ContainerConfigurable,
+)
+from simple_dependency_injector.core.injector import Injector
 
 
 class Container(ABC):

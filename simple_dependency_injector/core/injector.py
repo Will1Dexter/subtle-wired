@@ -123,60 +123,64 @@ class InjectedItem(object):
         return self.__instance
 
     @staticmethod
-    def init_wrapper(
+    def get_init_wrapper(
         init_function: Callable,
-        instance: Any,
         injector: 'Injector',
-    ) -> Any:
-        interface_consulted: dict[str, bool] = {}
-        interface = InjectedItem.get_implementation_interface(
-            instance.__class__
-        )
-        if interface is not None:
-            name = InjectedItem.get_interface_name(interface)
-            interface_consulted[name] = True
+    ) -> Callable:
+        def init_wrapper(self):
+            interface_consulted: dict[str, bool] = {}
+            interface = InjectedItem.get_implementation_interface(
+                self.__class__
+            )
+            if interface is not None:
+                name = InjectedItem.get_interface_name(interface)
+                interface_consulted[name] = True
 
-        sig: Signature = signature(init_function)
-        dependencies: list[Any] = []
-        for param in sig.parameters:
-            if param == 'self':
-                continue
+            sig: Signature = signature(init_function)
+            dependencies: list[Any] = []
+            for param in sig.parameters:
+                if param == 'self':
+                    continue
 
-            dep_type = sig.parameters[param].annotation
-            dep_default_value = sig.parameters[param].default
-            if dep_type is not _empty:
-                dependency = injector.get_instance_recursive(
-                    dep_type, _empty, interface_consulted
-                )
-            elif dep_default_value is not _empty:
-                dependency = dep_default_value
-            else:
-                raise AttributeError(
-                    "Parameter '"
-                    + param
-                    + "' not informed, without a type and default value!"
-                )
-            dependencies.append(dependency)
-        return init_function(instance, *dependencies)
+                dep_type = sig.parameters[param].annotation
+                dep_default_value = sig.parameters[param].default
+                if dep_type is not _empty:
+                    dependency = injector.get_instance_recursive(
+                        dep_type, _empty, interface_consulted
+                    )
+                elif dep_default_value is not _empty:
+                    dependency = dep_default_value
+                else:
+                    raise AttributeError(
+                        "Parameter '"
+                        + param
+                        + "' not informed, without a type and default value!"
+                    )
+                dependencies.append(dependency)
+            return init_function(self, *dependencies)
+
+        return init_wrapper
 
     @staticmethod
-    def get_wrapper(
-        property_function: Callable,
-        instance: Any,
+    def get_method_wrapper(
+        method_function: Callable,
         injector: 'Injector',
     ) -> Any:
-        interface_consulted: dict[str, bool] = {}
-        interface = InjectedItem.get_implementation_interface(
-            instance.__class__
-        )
-        if interface is not None:
-            name = InjectedItem.get_interface_name(interface)
-            interface_consulted[name] = True
+        def get_wrapper(self):
+            interface_consulted: dict[str, bool] = {}
+            interface = InjectedItem.get_implementation_interface(
+                self.__class__
+            )
+            if interface is not None:
+                name = InjectedItem.get_interface_name(interface)
+                interface_consulted[name] = True
 
-        sig: Signature = signature(property_function)
-        return injector.get_instance_recursive(
-            sig.return_annotation, _empty, interface_consulted
-        )
+            sig: Signature = signature(method_function)
+            return injector.get_instance_recursive(
+                sig.return_annotation, _empty, interface_consulted
+            )
+
+        return get_wrapper
 
 
 class Injector(Singleton):

@@ -5,20 +5,22 @@ from simple_dependency_injector.core.injector import InjectedItem, Injector
 
 def inject(func):
     if func.__name__ == '__init__':
-
-        def init_wrapper(self):
-            return InjectedItem.init_wrapper(func, self, Injector())
-
-        return init_wrapper
+        return InjectedItem.get_init_wrapper(func, Injector())
     else:
+        return InjectedItem.get_method_wrapper(func, Injector())
 
-        def set_wrapper(self, value):
-            raise AttributeError(
-                f"Cannot set attribute '{func.__name__}' on '{self.__class__.__name__}'. "
-                'This property is read-only (populated by the container)!'
-            )
 
-        def get_wrapper(self):
-            return InjectedItem.get_wrapper(func, self, Injector())
+class inject_property(property):
+    def __init__(self, func):
+        self.func = func
 
-        return property(fget=get_wrapper, fset=set_wrapper)
+    def __get__(self, instance, owner):
+        if instance is None:
+            return self
+        return InjectedItem.get_method_wrapper(self.func, Injector())(instance)
+
+    def __set__(self, instance, value):
+        raise AttributeError(
+            f"Cannot set attribute '{self.func.__name__}' on '{instance.__class__.__name__}'. "
+            'This property is read-only (populated by the container)!'
+        )
