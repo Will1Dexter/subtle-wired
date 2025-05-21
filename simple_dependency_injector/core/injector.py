@@ -3,10 +3,13 @@ __author__ = "Willian Antônio"
 from abc import ABC
 from inspect import Signature, _empty, getmro, signature
 from threading import Lock
-from typing import Any, Callable, Optional, Type
+from typing import Any, Callable, Optional, Type, TypeVar
 
 from simple_dependency_injector.core.base import Singleton
 from simple_dependency_injector.core.component import InjectedType
+
+
+T = TypeVar("T", bound=ABC)
 
 
 class InjectedItem(object):
@@ -254,7 +257,7 @@ class Injector(Singleton):
                 "Interface '" + name + "' and default value not found!"
             )
 
-    def get_instance(self, interface: Type) -> Any:
+    def get_instance(self, interface: type[T]) -> T:
         interface_consulted: dict[str, bool] = {}
         return self.get_instance_recursive(interface, _empty, interface_consulted)
 
