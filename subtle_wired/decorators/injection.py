@@ -1,6 +1,6 @@
 __author__ = 'Willian Antonio'
 
-from simple_dependency_injector.core.injector import InjectedItem, Injector
+from subtle_wired.core.injector import InjectedItem, Injector
 
 
 def inject(func):

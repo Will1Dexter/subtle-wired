@@ -2,10 +2,10 @@ __author__ = "Willian Antônio"
 
 from abc import ABC
 
-from simple_dependency_injector.core.component import (
+from subtle_wired.core.component import (
     ContainerComponent,
 )
-from simple_dependency_injector.core.injector import Injector
+from subtle_wired.core.injector import Injector
 
 
 class Container(ABC):

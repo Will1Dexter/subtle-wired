@@ -1,6 +1,6 @@
 __author__ = "Willian Antonio"
 
-from simple_dependency_injector.core.component import ContainerConfig
+from subtle_wired.core.component import ContainerConfig
 
 
 def singleton(is_lazy: bool = False):

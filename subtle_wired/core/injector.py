@@ -5,8 +5,8 @@ from inspect import Signature, _empty, getmro, signature
 from threading import Lock
 from typing import Any, Callable, Optional, Type, TypeVar
 
-from simple_dependency_injector.core.base import Singleton
-from simple_dependency_injector.core.component import InjectedType
+from subtle_wired.core.base import Singleton
+from subtle_wired.core.component import InjectedType
 
 
 T = TypeVar("T", bound=ABC)

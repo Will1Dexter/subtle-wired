@@ -1,12 +1,21 @@
 [project]
-name = "simple-dependency-injector"
-version = "0.1.0"
+name = "subtle-wired"
+version = "1.0.0"
 description = "A simple reflection-based dependency injector."
 authors = [
     { name = "Willian Antonio dos Santos", email = "will1.scientist@gmail.com" },
 ]
 license = { file = "LICENSE" }
-keywords = ["dependency-injection", "reflection", "python"]
+keywords = [
+    "subtle-wired",
+    "dependency-injection",
+    "dependency",
+    "injector",
+    "DI",
+    "uncouple",
+    "reflection",
+    "python",
+]
 classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
@@ -19,13 +28,12 @@ readme = "README.md"
 requires-python = ">=3.10,<4.0"
 dependencies = ["taskipy (>=1.14.1,<2.0.0)"]
 
-
 [project.urls]
-Homepage = "https://github.com/Will1Dexter/simple-dependency-injector"
-Documentation = "https://github.com/Will1Dexter/simple-dependency-injector/blob/master/README.md"
-Repository = "https://github.com/Will1Dexter/simple-dependency-injector"
-Issues = "https://github.com/Will1Dexter/simple-dependency-injector/issues"
-# Changelog = "https://github.com/Will1Dexter/simple-dependency-injector/blob/master/CHANGELOG.md"
+Homepage = "https://github.com/Will1Dexter/subtle-wired"
+Documentation = "https://github.com/Will1Dexter/subtle-wired/blob/master/README.md"
+Repository = "https://github.com/Will1Dexter/subtle-wired"
+Issues = "https://github.com/Will1Dexter/subtle-wired/issues"
+# Changelog = "https://github.com/Will1Dexter/subtle-wired/blob/master/CHANGELOG.md"
 
 
 [build-system]
