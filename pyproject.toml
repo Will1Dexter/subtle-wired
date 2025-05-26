@@ -2,9 +2,7 @@
 name = "subtle-wired"
 version = "1.0.0"
 description = "A simple reflection-based dependency injector."
-authors = [
-    { name = "Willian Antonio dos Santos", email = "will1.scientist@gmail.com" },
-]
+authors = [{ name = "Willian Antonio dos Santos" }]
 license = { file = "LICENSE" }
 keywords = [
     "subtle-wired",
@@ -33,7 +31,6 @@ Homepage = "https://github.com/Will1Dexter/subtle-wired"
 Documentation = "https://github.com/Will1Dexter/subtle-wired/blob/master/README.md"
 Repository = "https://github.com/Will1Dexter/subtle-wired"
 Issues = "https://github.com/Will1Dexter/subtle-wired/issues"
-# Changelog = "https://github.com/Will1Dexter/subtle-wired/blob/master/CHANGELOG.md"
 
 
 [build-system]
