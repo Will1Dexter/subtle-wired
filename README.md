@@ -49,12 +49,13 @@ class IUserRepository(ABC):
     def get_user(self, user_id: str) -> User:
         pass
 
-
 ```
 
 Below is a simplified implementation example for the previous interfaces:
 
 ```python
+from typing import Any
+import requests
 from subtle_wired.decorators import (
     singleton,
     factory,
@@ -112,8 +113,8 @@ Explanation:
   - `singleton` means that every time an instance of this class is requested, the instance created in the first request will be used;
   - `factory` means that every time an instance of this class is requested, a new instance will be created (note that this does not mean that the class is a factory, but rather that a factory within the container will generate it).
 - The `inject` and `inject_property` decorators are decorators for searching for instances within the container:
-  - `inject`, when applied to class constructors, searches for instances for the parameters of this constructor. It is not mandatory in class constructors that are within the container;
-  - `inject` and `inject_property` can be applied to methods (other than the constructor) to search for instances of the method's return in the container (the difference is in usage; `inject` only implements the method, keeping its call as a function, while `inject_property` turns the method into a property of the class's objects).
+  - `inject`, when applied to class initializers (`__init__` method), searches for instances for the parameters of this initializer. It is not mandatory in class initializers that are within the container;
+  - `inject` and `inject_property` can be applied to methods (other than the initializer) to search for instances of the method's return in the container (the difference is in usage; `inject` only implements the method, keeping its call as a function, while `inject_property` turns the method into a property of the class's objects).
 - The `is_lazy` flag (which has the default value `False`) when it has the value `True` means that an instance of the class will only be created in the container the first time it is requested (whether by eager classes internal or external to the container).
 
 ### 2. Creating the container with the list of component classes:
