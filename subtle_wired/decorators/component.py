@@ -1,4 +1,4 @@
-__author__ = "Willian Antonio"
+__author__ = 'Willian Antonio'
 
 from subtle_wired.core.component import ContainerConfig
 
@@ -8,8 +8,8 @@ def singleton(is_lazy: bool = False):
         @classmethod
         def container_config(cls) -> ContainerConfig:
             return {
-                "injected_type": "singleton",
-                "is_lazy": is_lazy,
+                'injected_type': 'singleton',
+                'is_lazy': is_lazy,
             }
 
         cls.container_config = container_config
@@ -23,8 +23,8 @@ def factory(is_lazy: bool = False):
         @classmethod
         def container_config(cls) -> ContainerConfig:
             return {
-                "injected_type": "factory",
-                "is_lazy": is_lazy,
+                'injected_type': 'factory',
+                'is_lazy': is_lazy,
             }
 
         cls.container_config = container_config
